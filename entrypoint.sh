@@ -94,9 +94,9 @@ if [[ -z "$INPUT_FILES_PATTERN_FILE" ]]; then
     ALL_CHANGED_AND_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "*ACDMRTUX" | awk -v d="$INPUT_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
     ALL_CHANGED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMR" | awk -v d="$INPUT_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
     ALL_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMRD" | awk -v d="$INPUT_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
-    if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
-      ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | awk -v d="$INPUT_OLD_NEW_FILES_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
-    fi
+    # if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
+    ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | awk -v d="$INPUT_OLD_NEW_FILES_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
+    # fi
   else
     ADDED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" A | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
     COPIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" C | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
@@ -109,9 +109,9 @@ if [[ -z "$INPUT_FILES_PATTERN_FILE" ]]; then
     ALL_CHANGED_AND_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "*ACDMRTUX" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
     ALL_CHANGED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMR" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
     ALL_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMRD" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
-    if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
-      ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
-    fi
+    # if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
+    ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}'| jq -R 'split("|") | @json' | sed -r 's/^"|"$//g' | tr -s /)
+    # fi
   fi
 else
   ADDED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" A | grep -x -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}')
@@ -125,9 +125,9 @@ else
   ALL_CHANGED_AND_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "*ACDMRTUX" | grep -x -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}')
   ALL_CHANGED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMR" | grep -x -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}')
   ALL_MODIFIED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMRD" | grep -x -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}')
-  if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
-    ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | grep -w -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="$INPUT_OLD_NEW_FILES_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
-  fi
+  # if [[ $INPUT_INCLUDE_ALL_OLD_NEW_RENAMED_FILES == "true" ]]; then
+  ALL_OLD_NEW_RENAMED=$(get_renames "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" | grep -w -E -f "$INPUT_FILES_PATTERN_FILE" | awk -v d="$INPUT_OLD_NEW_FILES_SEPARATOR" '{s=(NR==1?s:s d)$0}END{print s}')
+  # fi
 
   ALL_OTHER_CHANGED=$(get_diff "$INPUT_PREVIOUS_SHA" "$INPUT_CURRENT_SHA" "ACMR" | awk -v d="|" '{s=(NR==1?s:s d)$0}END{print s}')
 
