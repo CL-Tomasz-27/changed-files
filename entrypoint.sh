@@ -22,8 +22,8 @@ function get_diff() {
   sha="$2"
   filter="$3"
   while IFS='' read -r sub; do
-    sub_commit_pre="$(git diff "$base" "$sha" -- "$sub" | grep 'rename from' | awk '{print $3}')"
-    sub_commit_cur="$(git diff "$base" "$sha" -- "$sub" | grep 'rename to' | awk '{print $3}')"
+    sub_commit_pre="$(git diff "$base" "$sha" -- "$sub" | grep '^[-]Subproject commit' | awk '{print $3}')"
+    sub_commit_cur="$(git diff "$base" "$sha" -- "$sub" | grep '^[+]Subproject commit' | awk '{print $3}')"
     if [ -n "$sub_commit_cur" ]; then
     (
       cd "$sub" && (
@@ -46,8 +46,8 @@ function get_renames() {
   base="$1"
   sha="$2"
   while IFS='' read -r sub; do
-    sub_commit_pre="$(git diff "$base" "$sha" -- "$sub" | grep '^[-]Subproject commit' | awk '{print $3}')"
-    sub_commit_cur="$(git diff "$base" "$sha" -- "$sub" | grep '^[+]Subproject commit' | awk '{print $3}')"
+    sub_commit_pre="$(git diff "$base" "$sha" -- "$sub" | grep 'rename from'
+    sub_commit_cur="$(git diff "$base" "$sha" -- "$sub" | grep 'rename to'
     echo $sub_commit_pre
     echo $sub_commit_cur
     if [ -n "$sub_commit_cur" ]; then
